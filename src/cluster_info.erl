@@ -33,8 +33,8 @@
 -export([capture_io/2]).
 
 
--spec start() -> {ok, pid()} | {error, any()}.
--spec start(_,_) -> {ok, pid()} | {error, any()}.
+-spec start() -> {ok, pid()}.
+-spec start(_,_) -> {ok, pid()}.
 -spec start_phase(_,_,_) -> 'ok'.
 -spec prep_stop(_) -> any().
 -spec config_change(_,_,_) -> 'ok'.
