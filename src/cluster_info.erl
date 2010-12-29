@@ -60,17 +60,12 @@ start(_Type, _StartArgs) ->
 %% Lesser-used callbacks....
 
 start_phase(_Phase, _StartType, _PhaseArgs) ->
-    io:format("DEBUG: ~s:start_phase(~p, ~p, ~p)\n",
-              [?MODULE, _Phase, _StartType, _PhaseArgs]),
     ok.
 
 prep_stop(State) ->
-    io:format("DEBUG: ~s:prep_stop(~p)\n", [?MODULE, State]),
     State.
 
 config_change(_Changed, _New, _Removed) ->
-    io:format("DEBUG: ~s:config_change(~p, ~p, ~p)\n",
-              [?MODULE, _Changed, _New, _Removed]),
     ok.
 
 %% @spec (atom()) -> ok | undef
@@ -146,7 +141,6 @@ format(Pid, Fmt, Args) ->
 %% Returns: any
 %%----------------------------------------------------------------------
 stop(_State) ->
-    io:format("DEBUG: ~s:stop(~p)\n", [?MODULE, _State]),
     ok.
 
 %%%----------------------------------------------------------------------
