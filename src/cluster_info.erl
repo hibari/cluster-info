@@ -128,7 +128,8 @@ dump_nodes(Nodes, Path) ->
     [dump_node(Node, Path) || Node <- lists:sort(Nodes)].
 
 send(Pid, IoList) ->
-    Pid ! {collect_data, self(), IoList}.
+    Pid ! {collect_data, self(), IoList},
+    ok.
 
 format(Pid, Fmt) ->
     format(Pid, Fmt, []).
@@ -154,7 +155,7 @@ collect_remote_info(Remote, FH) ->
                       [X, Remote, node(Remote), Z]),
             ok;
         {collect_data, Remote, IoList} ->
-            file:write(FH, IoList),
+            ok = file:write(FH, IoList),
             collect_remote_info(Remote, FH);
         {collect_done, Remote} ->
             ok
@@ -174,20 +175,20 @@ dump_local_info(CPid) ->
     format(CPid, "== Node: ~p\n", [node()]),
     format(CPid, "\n"),
     Mods = lists:sort([Mod || {Mod, _Path} <- code:all_loaded()]),
-    [case (catch Mod:cluster_info_generator_funs()) of
-         {'EXIT', _} ->
-             ok;
-         NameFuns when is_list(NameFuns) ->
-             [try
-                  dbg("D: generator ~p ~s\n", [Fun, Name]),
-                  format(CPid, "= Generator name: ~s\n\n", [Name]),
-                  Fun(CPid),
-                  format(CPid, "\n")
-              catch X:Y ->
-                      format(CPid, "Error in ~p: ~p ~p at ~p\n",
-                             [Name, X, Y, erlang:get_stacktrace()])
-              end || {Name, Fun} <- NameFuns]
-     end || Mod <- Mods],
+    _ = [case (catch Mod:cluster_info_generator_funs()) of
+             {'EXIT', _} ->
+                 ok;
+             NameFuns when is_list(NameFuns) ->
+                 [try
+                      dbg("D: generator ~p ~s\n", [Fun, Name]),
+                      format(CPid, "= Generator name: ~s\n\n", [Name]),
+                      Fun(CPid),
+                      format(CPid, "\n")
+                  catch X:Y ->
+                          format(CPid, "Error in ~p: ~p ~p at ~p\n",
+                                 [Name, X, Y, erlang:get_stacktrace()])
+                  end || {Name, Fun} <- NameFuns]
+         end || Mod <- Mods],
     ok.
 
 dbg(_Fmt, _Args) ->
