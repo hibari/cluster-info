@@ -7,4 +7,5 @@
 .eqc_info
 .eunit/
 .qc/
+.rebar/
 erl_crash.dump
