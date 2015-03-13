@@ -22,7 +22,7 @@
 {application, cluster_info,
  [
   {description, "Cluster info/postmortem app"},
-  {vsn, "0.3.0"},
+  {vsn, "0.1.11"},
   {registered, []},
   {applications, [kernel, stdlib, sasl]},
   {mod, {cluster_info, []}},
